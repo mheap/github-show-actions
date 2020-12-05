@@ -10,6 +10,10 @@ This CLI allows you to audit which GitHub Actions are being used by a user / org
 npm install -g github-show-actions
 ```
 
+## Example output
+
+![Example Output](https://user-images.githubusercontent.com/59130/101267633-a92bd480-3752-11eb-952c-d3df031572fb.png)
+
 ## Usage
 
 You'll need to authenticate to use this tool. You can either set the `GITHUB_TOKEN` environment variable, or pass the `--pat` flag. Generate a new Personal Access Token [on GitHub](https://github.com/settings/tokens).
@@ -19,6 +23,8 @@ The simplest usage of this tool is to pass the `--target` parameter. This will r
 ```bash
 github-show-actions --target <org>
 ```
+
+> You can pass the `--format json` flag to see the raw data
 
 To get the same information, but group by the action name/version instead you can use the `--group` flag:
 
