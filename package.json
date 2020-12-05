@@ -1,0 +1,39 @@
+{
+  "name": "github-show-actions",
+  "version": "0.0.1",
+  "description": "Show all GitHub Actions used by a user/org",
+  "main": "index.js",
+  "bin": {
+    "github-show-actions": "./bin.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^18.0.9",
+    "chalk": "^4.1.0",
+    "js-yaml": "^3.14.0",
+    "lodash.groupby": "^4.6.0",
+    "object-scan": "^13.6.6",
+    "octokit-fetch-all-repos": "^1.0.4",
+    "yargs": "^16.1.1"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "nock": "^13.0.5"
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mheap/github-show-actions.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "CLI"
+  ],
+  "author": "Michael Heap <m@michaelheap.com> (https://michaelheap.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mheap/github-show-actions/issues"
+  },
+  "homepage": "https://github.com/mheap/github-show-actions#readme"
+}
