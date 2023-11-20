@@ -12,7 +12,7 @@
     "debug": "^4.3.1",
     "js-yaml": "^3.14.1",
     "lodash.groupby": "^4.6.0",
-    "object-scan": "^13.9.1",
+    "object-scan": "^19.0.5",
     "octokit-fetch-all-repos": "^1.0.6",
     "yargs": "^16.2.0"
   },
