@@ -6,8 +6,16 @@ This CLI allows you to audit which GitHub Actions are being used by a user / org
 
 ## Installation
 
+### NPM
+
 ```bash
 npm install -g github-show-actions
+```
+
+### Docker
+
+```bash
+alias github-show-actions="docker run --rm -e GITHUB_TOKEN mheap/github-show-actions"
 ```
 
 ## Example output
