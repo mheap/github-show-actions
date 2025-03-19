@@ -1,5 +1,5 @@
-const objectScan = require("object-scan");
-const yaml = require("js-yaml");
+import objectScan from "object-scan";
+import yaml from "js-yaml";
 
 const findValueByKey = (data, targetKey) => {
   return objectScan(["**"], {
@@ -8,9 +8,9 @@ const findValueByKey = (data, targetKey) => {
   })(data);
 };
 
-module.exports = function (contents) {
+export default function (contents) {
   // YAML decode
-  const workflow = yaml.safeLoad(contents, "utf8");
+  const workflow = yaml.load(contents, "utf8");
 
   // Return versions
   const actions = findValueByKey(workflow, "uses");

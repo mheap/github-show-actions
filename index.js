@@ -1,15 +1,17 @@
-let { Octokit } = require("@octokit/rest");
-Octokit = Octokit.plugin(require("octokit-fetch-all-repos"));
+import { Octokit } from "@octokit/rest";
+import fetchAllRepos from "octokit-fetch-all-repos";
+const MyOctokit = Octokit.plugin(fetchAllRepos);
 
-const fs = require("fs");
-const chalk = require("chalk");
-const debug = require("debug")("gsa:entrypoint");
-const groupBy = require("lodash.groupby");
+import fs from "fs";
+import chalk from "chalk";
+import debugMod from "debug";
+const debug = debugMod("gsa:entrypoint");
+import groupBy from "lodash.groupby";
 
-const actionExtractor = require("./action-extractor");
-const loadWorkflows = require("./load-workflows");
+import actionExtractor from "./action-extractor.js";
+import loadWorkflows from "./load-workflows.js";
 
-module.exports = async function (argv) {
+export default async function (argv) {
   // Set up auth
   const token = argv.pat || process.env.GITHUB_TOKEN;
 
@@ -17,7 +19,7 @@ module.exports = async function (argv) {
   const owner = argv.target;
 
   // Fetch list of repos
-  const octokit = new Octokit({
+  const octokit = new MyOctokit({
     auth: token,
   });
 
@@ -35,7 +37,7 @@ module.exports = async function (argv) {
 
   if (!data) {
     debug("Fetching repo list");
-    let repos = await octokit.repos.fetchAll({
+    let repos = await octokit.fetchAllRepos({
       owner,
       visibility: argv.visibility || "all",
       minimum_access: "pull",
@@ -92,7 +94,7 @@ module.exports = async function (argv) {
     output[k] = output[k] || {};
 
     for (let workflowKey of Object.keys(grouped[k]).sort()) {
-      workflow = grouped[k][workflowKey];
+      const workflow = grouped[k][workflowKey];
       const actionOrRepo = workflow[otherKey];
       output[k][actionOrRepo] = output[k][actionOrRepo] || [];
       output[k][actionOrRepo].push(workflow.name);
