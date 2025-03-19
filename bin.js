@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
+import run from "./index.js"
 
 const argv = yargs(hideBin(process.argv))
   .option("pat", {
@@ -39,5 +39,5 @@ const argv = yargs(hideBin(process.argv))
   .demandOption(["target"]).argv;
 
 (async function (argv) {
-  require(".")(argv);
+  run(argv);
 })(argv);

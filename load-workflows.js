@@ -1,11 +1,11 @@
-module.exports = async function (octokit, r) {
+export default async function (octokit, r) {
   const owner = r.owner.login;
   const repo = r.name;
 
   const workflows = [];
 
   try {
-    const { data: files } = await octokit.repos.getContent({
+    const { data: files } = await octokit.rest.repos.getContent({
       owner,
       repo,
       path: ".github/workflows",
@@ -13,7 +13,7 @@ module.exports = async function (octokit, r) {
 
     // Load the file contents for each repo
     for (let file of files) {
-      const { data: workflow } = await octokit.repos.getContent({
+      const { data: workflow } = await octokit.rest.repos.getContent({
         owner,
         repo,
         path: file.path,
