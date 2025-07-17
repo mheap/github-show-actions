@@ -26,6 +26,18 @@ alias github-show-actions="docker run --rm -e GITHUB_TOKEN mheap/github-show-act
 
 You'll need to authenticate to use this tool. You can either set the `GITHUB_TOKEN` environment variable, or pass the `--pat` flag. Generate a new Personal Access Token [on GitHub](https://github.com/settings/tokens).
 
+If you have gh-cli installed, you can authenticate with `gh auth login --scopes repo` and then run this tool without any additional configuration.
+For GitHub Enterprise, you can use `gh auth login --hostname <your-ghe-hostname>` to authenticate and then run the tool with the `--base-url` flag.
+
+```bash
+# Set environment variables
+export GITHUB_TOKEN=$(gh auth token --hostname your_company.ghe.com)
+export GITHUB_BASE_URL=https://your_company.ghe.com/api/v3
+
+# Run the tool
+github-show-actions --target your_org --base-url $GITHUB_BASE_URL
+```
+
 The simplest usage of this tool is to pass the `--target` parameter. This will return a list of actions used in all public and private repos, grouped by `repo`
 
 ```bash
@@ -50,6 +62,19 @@ If you'd like to show actions used in public repos only you can pass the `--visi
 
 ```bash
 github-show-actions --target <org> --group action  --cache /tmp/cache.json --visibility public
+```
+
+Generate list of external action without versions (useful to prepare allow list for organization):
+
+```bash
+❯ github-show-actions \
+  --target my_org \
+  --base-url $GITHUB_BASE_URL \
+  --group action \
+  --cache .cache.json \
+  --actions-only-external \
+  --strip-version-number \
+  --exclude-orgs "some-org-1,some-org-2"
 ```
 
 Finally, if you'd like to see the workflow name that uses each action you can pass `--show-workflow`:
