@@ -8,7 +8,7 @@
     "github-show-actions": "bin.js"
   },
   "dependencies": {
-    "@octokit/rest": "^21.1.1",
+    "@octokit/rest": "^22.0.0",
     "chalk": "^5.4.1",
     "debug": "^4.4.0",
     "js-yaml": "^4.1.0",
