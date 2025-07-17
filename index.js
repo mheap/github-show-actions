@@ -19,9 +19,16 @@ export default async function (argv) {
   const owner = argv.target;
 
   // Fetch list of repos
-  const octokit = new MyOctokit({
+  const octokitConfig = {
     auth: token,
-  });
+  };
+
+  // Support for GitHub Enterprise
+  if (argv.baseUrl) {
+    octokitConfig.baseUrl = argv.baseUrl;
+  }
+
+  const octokit = new MyOctokit(octokitConfig);
 
   let data;
   const cache = argv.cache;
@@ -83,6 +90,43 @@ export default async function (argv) {
 
   if (argv.format == "json") {
     console.log(JSON.stringify(grouped));
+    return;
+  }
+
+  // Handle actions-only mode
+  if (argv.actionsOnlyExternal) {
+    let uniqueActions = [...new Set(data.map(item => item.action))]
+      .filter(action => !action.startsWith('./'))  // Filter out local actions
+      // .filter(action => !action.startsWith('.github/workflows'))  // Filter out workflow files
+      .filter(action => !action.startsWith(`${owner}/`));  // Filter out organizational actions
+    
+    // Filter out excluded organizations
+    if (argv.excludeOrgs) {
+      const excludedOrgs = argv.excludeOrgs.split(',').map(org => org.trim());
+      uniqueActions = uniqueActions.filter(action => {
+        return !excludedOrgs.some(org => action.startsWith(`${org}/`));
+      });
+    }
+    
+    // Strip version numbers if requested
+    if (argv.stripVersionNumber) {
+      uniqueActions = uniqueActions
+        .map(action => {
+          // Strip version and add @v* wildcard
+          const atIndex = action.lastIndexOf('@');
+          if (atIndex !== -1) {
+            return action.substring(0, atIndex) + '@v*';
+          }
+          return action;
+        })
+        .filter((action, index, arr) => arr.indexOf(action) === index);  // Remove duplicates after version stripping
+    }
+    
+    uniqueActions.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+    
+    for (let action of uniqueActions) {
+      console.log(action);
+    }
     return;
   }
 
